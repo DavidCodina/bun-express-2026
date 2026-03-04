@@ -21,9 +21,28 @@ import { drizzle } from 'drizzle-orm/bun-sql'
 import { relations } from './relations2'
 
 export const db = drizzle(process.env.DATABASE_URL!, {
+  ///////////////////////////////////////////////////////////////////////////
+  //
+  // https://orm.drizzle.team/docs/sql-schema-declaration#camel-and-snake-casing
+  // Database model names often use snake_case conventions, while in TypeScript,
+  // it is common to use camelCase for naming models. This can lead to a lot of
+  // alias definitions in the schema. To address this, Drizzle provides a way to
+  // automatically map camelCase from TypeScript to snake_case in the database
+  // by including one optional parameter during Drizzle database initialization
+  //
+  // casing: 'snake_case',
+  //
+  ///////////////////////////////////////////////////////////////////////////
   logger: true,
   relations
+  ///////////////////////////////////////////////////////////////////////////
+  //
   // With Drizzle's relations v2 API, passing schema separately to drizzle()
   // is redundant. It's already been included through relations.
+  // Note: When implementing BetterAuth, you'll likely need to pass the schema
+  // in the adapter's config. See here at 13:40: https://www.youtube.com/watch?v=N4-VDia4NcI
+  //
   // ❌ schema
+  //
+  ///////////////////////////////////////////////////////////////////////////
 })

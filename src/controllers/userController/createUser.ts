@@ -115,6 +115,8 @@ export const createUser = async (
     const result = await db
       .insert(UsersTable)
       .values({ username, email, password })
+
+      // https://orm.drizzle.team/docs/insert#returning
       .returning(safeUserFields)
 
     // .onConflictDoUpdate() | .onConflictDoNothing()

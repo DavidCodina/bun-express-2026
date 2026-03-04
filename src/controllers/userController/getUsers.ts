@@ -1,15 +1,16 @@
 import type { Request, Response /*, NextFunction */ } from 'express'
 
-import {
-  // asc,
-  desc,
-  eq
-  // ilike
-  // sql // Run raw SQL inside of Drizzle.
-} from 'drizzle-orm'
-
+///////////////////////////////////////////////////////////////////////////
+//
+// and, arrayContained, arrayContains, arrayOverlaps, asc, assertUnreachable, avg,
+// avg, avgDistinct, between, cosineDistance, count, countDistinct, desc, eq, exists,
+// gt, gte, ilike, inArray, is, like, lt, lte, max, min, ne, not, notBetween, notExists,
+// notIlike, notInArray, notLike, or, sql, sum sumDistinct, etc.
+// See all filter operators here: https://orm.drizzle.team/docs/rqb-v2#select-filters
+//
+///////////////////////////////////////////////////////////////////////////
+import * as drizzle from 'drizzle-orm'
 import { UserPreferencesTable, UsersTable, db, safeUserFields } from '@/db'
-
 import { codes, handleError } from '@/utils'
 import type { ResBody, SafeUser } from '@/types'
 
@@ -27,7 +28,9 @@ export const getUsers = async (
 
     ///////////////////////////////////////////////////////////////////////////
     //
-    // One can also use the query API.
+    // One can also use the query API: https://orm.drizzle.team/docs/rqb-v2
+    // Here we simply have .findFirst() and .findMany(). Inside the config object we have:
+    // { columns?, extras?, limit?, offset?, orderBy?, where?, with? }
     //
     // const safeUsers = await db.query.UsersTable.findMany({
     //   columns: { password: false },
@@ -85,11 +88,11 @@ export const getUsers = async (
       .from(UsersTable) // Explore other methods after this
       .leftJoin(
         UserPreferencesTable,
-        eq(UsersTable.id, UserPreferencesTable.userId)
+        drizzle.eq(UsersTable.id, UserPreferencesTable.userId)
       )
 
-      // .where(ilike(UsersTable.email, 'fred%'))
-      .orderBy(desc(UsersTable.createdAt))
+      // .where(drizzle.ilike(UsersTable.email, 'fred%'))
+      .orderBy(drizzle.desc(UsersTable.createdAt))
 
     ///////////////////////////////////////////////////////////////////////////
     //

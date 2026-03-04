@@ -18,6 +18,7 @@ import * as schema from './schema'
 /* ========================================================================
                             Relations (v2)
 ======================================================================== */
+// https://orm.drizzle.team/docs/relations-schema-declaration
 
 export const relations = defineRelations(schema, (r) => ({
   // One user → one preferences record, one user → many posts
