@@ -53,6 +53,7 @@ export const updateUser = async (
       .update(UsersTable)
       .set({ username })
       .where(eq(UsersTable.id, id))
+      // NOT available for MySQL - https://orm.drizzle.team/docs/update#returning
       .returning(safeUserFields)
 
     const updatedUser = result?.[0] || null
